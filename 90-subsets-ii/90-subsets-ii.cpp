@@ -1,30 +1,24 @@
 class Solution
 {
     public:
-        void topdown(vector<int> &nums, set<vector< int >> &ans, int i, vector< int > &res)
+        void topdown(vector<int> &nums, vector<vector< int >> &ans, int i, vector< int > &res)
         {
-            if (i == nums.size())
+            ans.push_back(res);
+            for (int ind = i; ind < nums.size(); ind++)
             {
-                
-                ans.insert(res);
-                return;
+                if (i != ind and nums[ind] == nums[ind - 1]) continue;
+                res.push_back(nums[ind]);
+                topdown(nums, ans, ind + 1, res);
+                res.pop_back();
             }
-            res.push_back(nums[i]);
-            topdown(nums, ans, i + 1, res);
-            res.pop_back();
-            topdown(nums, ans, i + 1, res);
         }
     vector<vector < int>> subsetsWithDup(vector<int> &nums)
     {
-        set<vector < int>> s;
-        vector<int> res;
-        sort(nums.begin(),nums.end());
-        topdown(nums, s, 0, res);
         vector<vector < int>> ans;
-        for (auto it: s)
-        {
-            ans.push_back(it);
-        }
+        vector<int> res;
+        sort(nums.begin(), nums.end());
+        topdown(nums, ans, 0, res);
+
         return ans;
     }
 };
