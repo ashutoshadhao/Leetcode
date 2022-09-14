@@ -1,49 +1,34 @@
 class Solution
 {
     public:
-        bool safe(int n, int row, int col, vector< string> &board )
+
+        void NQueen(int n, vector<string> &board, int row, vector<vector< string >> &ans, vector< int > &leftRow, vector< int > &upperDiagonal, vector< int > &lowerDiagonal)
         {
-           	// Column Check karega
-            for (int i = row - 1; i >= 0; i--)
+            if (row == n)
             {
-                if (board[i][col] =='Q')
-                    return false;
+                ans.push_back(board);
+                return;
             }
-            
-           	// Left Diagonal
-            for (int i = row - 1, j = col - 1 ; i >= 0 and j >= 0 ; i--, j--)
+            for (int col = 0; col < n; col++)
             {
-                if (board[i][j] == 'Q')
-                    return false;
-            }
-            
-           	// Right  Diagonal
-            for (int i = row - 1, j = col + 1; i >= 0 and j < n; i--, j++)
-            {
-                if (board[i][j] == 'Q')
-                    return false;
-            }
-            
-            return true;
-        }
- 
-    void NQueen(int n, vector< string> &board, int row, vector< vector< string>> &ans)
-    {
-        if (row == n)
-        {
-            ans.push_back(board);
-            return;
-        }
-        for (int i = 0; i < n; i++)
-        {
-            if (safe(n, row, i, board))
-            {
-                board[row][i] = 'Q';
-                NQueen(n, board, row + 1, ans);
-                board[row][i] = '.';
+                if (leftRow[col] == 0 and lowerDiagonal[row + col] == 0 and upperDiagonal[n - 1 + row - col] == 0)
+                {
+                    board[row][col] = 'Q';
+                    
+                    leftRow[col] = 1;
+                    lowerDiagonal[col + row] = 1;
+                    upperDiagonal[n - 1 + row - col] = 1;
+                    
+                    NQueen(n, board, row + 1, ans, leftRow, upperDiagonal, lowerDiagonal);
+                    
+                    board[row][col] = '.';
+                    
+                    leftRow[col] = 0;
+                    lowerDiagonal[col + row] = 0;
+                    upperDiagonal[n - 1 + row - col] = 0;
+                }
             }
         }
-    }
     vector<vector < string>> solveNQueens(int n)
     {
         vector<vector < string>> ans;
@@ -53,7 +38,8 @@ class Solution
         {
             board[i] = s;
         }
-        NQueen(n, board, 0, ans);
+        vector<int> leftRow(n, 0), upperDiagonal(2 *n - 1, 0), lowerDiagonal(2 *n - 1, 0);
+        NQueen(n, board, 0, ans, leftRow, upperDiagonal, lowerDiagonal);
         return ans;
     }
 };
