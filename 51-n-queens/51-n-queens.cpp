@@ -1,72 +1,66 @@
 class Solution
 {
     public:
-    bool safe(int n, int row, int col, vector<vector < bool>> &grid)
-    {
-        // Column Check karega
-
-        for (int i = row - 1; i >= 0; i--)
+        bool safe(int n, int col, int row, vector<string> &board)
         {
-            if (grid[i][col])
-                return false;
-        }
+            int duprow = row;
+            int dupcol = col;
 
-        // Left Diagonal
-
-        for (int i = row - 1, j = col - 1; i >= 0 and j >= 0; i--, j--)
-        {
-            if (grid[i][j])
-                return false;
-        }
-
-        // Right  Diagonal
-
-        for (int i = row - 1, j = col + 1; i >= 0 and j < n; i--, j++)
-        {
-            if (grid[i][j])
-                return false;
-        }
-        return true;
-    }
-    void display(vector<vector < string>> &ans , vector<vector < bool>> &grid, int n )
-    {
-        vector<string> temp ;
-        for(int i = 0 ; i < n ; i++)
-        {
-            string s ; 
-            for(int j = 0 ; j < n ; j++)
+            while (row >= 0 && col >= 0)
             {
-                if(grid[i][j] )
-                    s.push_back('Q');
-                else 
-                    s.push_back('.');
+                if (board[row][col] == 'Q')
+                    return false;
+                row--;
+                col--;
             }
-             temp.push_back(s);
+
+            col = dupcol;
+            row = duprow;
+            while (col >= 0)
+            {
+                if (board[row][col] == 'Q')
+                    return false;
+                col--;
+            }
+
+            row = duprow;
+            col = dupcol;
+            while (row < n && col >= 0)
+            {
+                if (board[row][col] == 'Q')
+                    return false;
+                row++;
+                col--;
+            }
+            return true;
         }
-        ans.push_back(temp);
-    }
-    void NQueen(int n, vector<vector < bool>> &grid, int row , vector<vector < string>> &ans )
+    void NQueen(int n, vector<string> &board, int col, vector<vector< string>> &ans)
     {
-        if (row == n)
+        if (col == n)
         {
-            display(ans,grid,n);
+            ans.push_back(board);
             return;
         }
-        for (int i = 0; i < n; i++)
+        for (int row = 0; row < n; row++)
         {
-            if (safe(n, row, i, grid))
+            if (safe(n, col, row, board))
             {
-                grid[row][i] = true;
-                NQueen(n, grid, row + 1,ans);
-                grid[row][i] = false;
+                board[row][col] = 'Q';
+                NQueen(n, board, col + 1, ans);
+                board[row][col] = '.';
             }
         }
     }
     vector<vector < string>> solveNQueens(int n)
     {
         vector<vector < string>> ans;
-        vector<vector < bool>> grid(n, vector<bool> (n, false));
-        NQueen(n, grid, 0 ,ans );
+        string s(n, '.');
+        vector<string> board(n);
+        for (int i = 0; i < n; i++)
+        {
+            board[i] = s;
+        }
+        NQueen(n, board, 0, ans);
         return ans;
     }
 };
