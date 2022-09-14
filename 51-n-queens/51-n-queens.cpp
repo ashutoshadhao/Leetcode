@@ -1,53 +1,46 @@
 class Solution
 {
     public:
-        bool safe(int n, int col, int row, vector<string> &board)
+        bool safe(int n, int row, int col, vector< string> &board )
         {
-            int duprow = row;
-            int dupcol = col;
-
-            while (row >= 0 && col >= 0)
+           	// Column Check karega
+            for (int i = row - 1; i >= 0; i--)
             {
-                if (board[row][col] == 'Q')
+                if (board[i][col] =='Q')
                     return false;
-                row--;
-                col--;
             }
-
-            col = dupcol;
-            row = duprow;
-            while (col >= 0)
+            
+           	// Left Diagonal
+            for (int i = row - 1, j = col - 1 ; i >= 0 and j >= 0 ; i--, j--)
             {
-                if (board[row][col] == 'Q')
+                if (board[i][j] == 'Q')
                     return false;
-                col--;
             }
-
-            row = duprow;
-            col = dupcol;
-            while (row < n && col >= 0)
+            
+           	// Right  Diagonal
+            for (int i = row - 1, j = col + 1; i >= 0 and j < n; i--, j++)
             {
-                if (board[row][col] == 'Q')
+                if (board[i][j] == 'Q')
                     return false;
-                row++;
-                col--;
             }
+            
             return true;
         }
-    void NQueen(int n, vector<string> &board, int col, vector<vector< string>> &ans)
+ 
+    void NQueen(int n, vector< string> &board, int row, vector< vector< string>> &ans)
     {
-        if (col == n)
+        if (row == n)
         {
             ans.push_back(board);
             return;
         }
-        for (int row = 0; row < n; row++)
+        for (int i = 0; i < n; i++)
         {
-            if (safe(n, col, row, board))
+            if (safe(n, row, i, board))
             {
-                board[row][col] = 'Q';
-                NQueen(n, board, col + 1, ans);
-                board[row][col] = '.';
+                board[row][i] = 'Q';
+                NQueen(n, board, row + 1, ans);
+                board[row][i] = '.';
             }
         }
     }
