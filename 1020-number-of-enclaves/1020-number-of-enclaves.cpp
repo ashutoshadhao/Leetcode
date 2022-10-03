@@ -6,37 +6,20 @@ public:
         queue<pair<int, int>> q;
         for (int i = 0; i < n; i++)
         {
-            if (grid[i][0] == 1)
+            for (int j = 0; j < m; j++)
             {
-                vis[i][0] = 1;
-                q.push({ i, 0 });
+                if( i == 0 or j == 0 or i == n-1 or j == m-1 )
+                {
+                    if( grid[i][j] == 1 )
+                    {
+                        q.push({i,j}) ;
+                        vis[i][j] = 1 ;
+                    }
+                }
             }
         }
-        for (int i = 0; i < m; i++)
-        {
-            if (grid[0][i] == 1)
-            {
-                vis[0][i] = 1;
-                q.push({ 0,
-                    i });
-            }
-        }
-        for (int i = 0; i < m; i++)
-        {
-            if (grid[n - 1][i] == 1)
-            {
-                vis[n - 1][i] = 1;
-                q.push({ n - 1,i });
-            }
-        }
-        for (int i = 0; i < n; i++)
-        {
-            if (grid[i][m - 1] == 1)
-            {
-                vis[i][m - 1] = 1;
-                q.push({ i, m - 1 });
-            }
-        }
+        
+       
         while(!q.empty())
         {
             int row = q.front().first ;
