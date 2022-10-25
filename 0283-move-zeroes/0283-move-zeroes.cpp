@@ -3,24 +3,23 @@ class Solution
     public:
         void moveZeroes(vector<int> &nums)
         {
-            int cnt = 0;
-            int n = nums.size();
-            for (int i = 0; i < n; i++)
+            int i = 0, j = 0;
+            while (i < nums.size() and j < nums.size())
             {
-                if (nums[i] == 0)
+                if (nums[j] != 0 and nums[i] == 0)
                 {
-
-                    for (int j = i + 1; j < n; j++)
-                    {
-                        if (nums[j] != 0)
-                        {
-                            swap(nums[i], nums[j]);
-                            break; 
-                        }
-                    }
-                    // for (auto it: nums) cout << it << "  ";
-                    // cout << endl;
+                    swap(nums[i], nums[j]);
+                    i++;
                 }
+                else if(nums[j] != 0 and nums[i] != 0 ) 
+                {
+                    i++ ;
+                    j++ ;
+                }
+                else if(nums[i] != 0 ) i++ ;
+                else if (nums[j] == 0) j++;
+                
+               
             }
         }
 };
