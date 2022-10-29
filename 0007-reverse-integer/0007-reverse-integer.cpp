@@ -3,21 +3,15 @@ class Solution
     public:
         int reverse(int x)
         {
-            string s = to_string(x);
-            int flag = 1;
-            if (s[0] == '-')
+            int ans = 0;
+            while (x)
             {
-                flag = -1;
-                s = s.substr(1);
+                int digit = x % 10;
+                if (ans > INT_MAX / 10) return 0;
+                if (ans < INT_MIN / 10) return 0;
+                ans = (ans *10) + digit;
+                x = x / 10;
             }
-            int n = s.size();
-            long long int ans = 0 ;
-            for( int i = n-1 ; i >=0  ; i-- )
-            {
-                if( ans > INT_MAX ) return 0 ;
-                ans += (s[i] - '0') * pow(10,i) ;
-                // cout<<ans<<endl;
-            }
-            return flag * ans ;
+            return ans;
         }
 };
