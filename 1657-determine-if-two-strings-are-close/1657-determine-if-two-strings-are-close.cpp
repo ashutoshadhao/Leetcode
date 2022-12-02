@@ -1,15 +1,28 @@
 class Solution {
 public:
     bool closeStrings(string word1, string word2) {
-        vector<int>w1(26,0),w2(26,0),w3(26,0),w4(26,0);
-        for(char c:word1)
-            w1[c-'a']++,w3[c-'a'] = 1;
-    
-        for(char c:word2)
-            w2[c-'a']++,w4[c-'a'] = 1;
+        if(word1.size() != word2.size()) 
+            return false ;
+        vector<int> f1(26,0), f2(26,0) ;
+        for( int i = 0 ;i < word1.size() ; i++ )
+        {
+            f1[word1[i] - 'a']++;
+            f2[word2[i] - 'a']++;
+        }
+        for(int i = 0 ; i< word1.size() ; i++ )
+        {
+           if(f1[word2[i] - 'a'] == 0 )
+               return false ;
+        }
+        sort(f1.begin(),f1.end()) ;
+        sort(f2.begin(),f2.end()) ;
+        for(int i = 0 ; i < 26 ; i++ )
+        {
+            // cout<<f1[i]<<"   "<<f2[i]<<"   ";
+            if(f1[i] != f2[i]) 
+                return false ;
+        }
         
-        sort(begin(w1),end(w1));
-        sort(begin(w2),end(w2));
-        return w1==w2&&w3==w4;
+        return true; 
     }
 };
